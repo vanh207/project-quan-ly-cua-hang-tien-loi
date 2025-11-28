@@ -18,21 +18,21 @@ typedef struct {
 Product products[20] ={
     {"SP001", "Gao ST25", "kg", 150, 1},
     {"SP002", "Duong trang", "kg", 80, 1},
-    {"SP003", "Sua tuoi", "hop", 45, 0},
+    {"SP003", "Sua tuoi", "hop", 45, 1},
     {"SP004", "Nuoc ngot Coca", "lon", 120, 1},
     {"SP005", "Mi tom Hao Hao", "thung", 60, 1},
     {"SP006", "Kem danh rang", "tui", 25, 1},
-    {"SP007", "Bot giat Omo", "tui", 35, 0},
+    {"SP007", "Bot giat Omo", "tui", 35, 1},
     {"SP008", "Dau an Neptune", "chai", 70, 1},
     {"SP009", "Nuoc mam Chin-su", "chai", 90, 1},
     {"SP010", "Banh mi", "cai", 200, 1},
     {"SP011", "Trung ga", "qua", 180, 1},
-    {"SP012", "Ca hop", "hop", 40, 0},
+    {"SP012", "Ca hop", "hop", 40, 1},
     {"SP013", "Khan giay", "goi", 75, 1},
     {"SP014", "Bia Tiger", "thung", 50, 1},
     {"SP015", "Ca phe G7", "hop", 65, 1},
     {"SP016", "Xa phong Lifebuoy", "cuc", 110, 1},
-    {"SP017", "Dau goi Clear", "chai", 30, 0},
+    {"SP017", "Dau goi Clear", "chai", 30, 1},
     {"SP018", "Banh snack", "tui", 150, 1},
     {"SP019", "Nuoc suoi La Vie", "chai", 200, 1},
     {"SP020", "Thuoc bo Vitamin", "vien", 85, 1}
@@ -140,7 +140,7 @@ int isDuplicateId(char *productId) {
 
 void addItem() {
     int size = 0;
-    int maxProducts=sizeof(products)/sizeof(int);
+    int maxProducts=sizeof(products)/sizeof(products[0]);
     if(productCount<maxProducts){
 		    getnumber("Nhap so luong mat hang", 1, 100, &size);
 		    for (int i = 0; i < size; i++) {
@@ -149,7 +149,7 @@ void addItem() {
 		            getstring(products[productCount].productId, "Ma hang hoa", 10);
 		            if (isDuplicateId(products[productCount].productId)) {
 		                printf("Loi! Ma hang hoa da ton tai. Vui long nhap ma khac.\n");
-		            } else {
+		            } else{
 		                break;
 		            }
 		        } while (1);
@@ -157,7 +157,7 @@ void addItem() {
 		            getstring(products[productCount].name, "Ten hang hoa", 50);
 		            if (isDuplicateId(products[productCount].name)) {
 		                printf("Loi! Ten hang hoa da ton tai. Vui long nhap ten khac.\n");
-		            } else {
+		        	}else{
 		                break;
 		            }
 		        } while (1);
@@ -213,16 +213,16 @@ void displayProducts(){
 	        printf("\t\t\t|| Hien thi: %d-%d / %d san pham%-19s||\n", 
 	               start + 1, end, productCount, "");
 	        printf("\t\t\t++=========================================================================++\n");
-	        printf("\t\t\t||1: Trang sau | 0: Thoat |2: Trang truoc \n");
+	        printf("\t\t\t||1: Trang truoc | 0: Thoat |2: Trang sau \n");
 	        printf("\t\t\t++=========================================================================++\n");
-	        getnumber("lua chon cua ban",0,2,&tmp);
-	        if(tmp == 1) {
+	        getnumber("\t\t\tlua chon cua ban",0,2,&tmp);
+	        if(tmp == 2) {
 	        if(page < totalPages){
 				page++;
 	            }else{
 	            	printf("Day la trang cuoi.\n");	
 				} 
-	        } else if(tmp == 2) {
+	        } else if(tmp == 1) {
 	            if(page > 1){
 	            	page--;
 	            }else{
@@ -452,13 +452,17 @@ void sortQuantity(){
         	}
         	printf("\t\t\t++=========================================================================++\n");	
 		}else{
-			for(int i = 0; i<productCount-1; i++){
-				for(int j = 0; j<productCount-1-i;j++){
-					if(strcmpi(products[j].name,products[j+1].name)>0){
-						Product tmp = products[j];
-                		products[j] = products[j+1];
-                		products[j+1] = tmp;
+			for(int i = 0; i< productCount - 1; i++){
+				int minIndex=i;
+				for(int j=i+1; j<productCount; j++){
+					if(strcmpi(products[j].name,products[i].name)>0){
+						minIndex=j;
 					}
+				}
+				if(minIndex!=i){
+					Product tmp = products[minIndex];
+                	products[minIndex] = products[i];
+                	products[i] = tmp;
 				}
 			}
 			printf("\n\t\t\t++====================DANH SACH HANG HOA (Trang %d/%d)====================++\n");
@@ -687,4 +691,3 @@ int main() {
     
     return 0;
 }
-
