@@ -105,6 +105,7 @@ int main() {
     return 0;
 }
 
+
 void deleteSpace(char *string, int length) {
     int start = 0;
     int end = length - 1;
@@ -299,65 +300,64 @@ void displayProducts() {
         printf("\n\t\t\t++====================THONG BAO====================++\n");
         printf("\t\t\t||%-48s||\n", " Danh sach hang hoa rong");
         printf("\t\t\t++==================================================++\n");
-        return;
-    }
-    
-    int tmp;
-    int itemPerPage;
-    int page = 1;
-    
-    getNumber("Nhap so luong muc moi trang (1-10)", 1, 10, &itemPerPage);
-    
-    do {
-        int totalPages = (productCount + itemPerPage - 1) / itemPerPage;
-        int start = (page - 1) * itemPerPage;
-        int end = start + itemPerPage;
-        
-        if (end > productCount) {
-            end = productCount;
-        }
-            
-        printf("\n\t\t\t++====================DANH SACH HANG HOA (Trang %d/%d)====================++\n", page, totalPages);
-        printf("\t\t\t|| %-10s | %-20s | %-8s | %-6s | %-15s ||\n", 
-            "MA HANG", "TEN HANG", "DON VI", "SL TON", "TT");
-        printf("\t\t\t++-------------------------------------------------------------------------++\n");    
-            
-        for (int i = start; i < end; i++) {
-            printf("\t\t\t|| %-10s | %-20s | %-8s | %-6d | %-15s ||\n",
-                    products[i].productId,
-                    products[i].name,
-                    products[i].unit,
-                    products[i].qty,
-                    products[i].status == 1 ? "Con su dung" : "Da het han");
-            }
-        
-        printf("\t\t\t++-------------------------------------------------------------------------++\n");
-        printf("\t\t\t|| Hien thi: %d-%d / %d san pham%-19s||\n", 
-               start + 1, end, productCount, "");
-        printf("\t\t\t++=========================================================================++\n");
-        printf("\t\t\t||1: Trang truoc | 0: Thoat |2: Trang sau \n");
-        printf("\t\t\t++=========================================================================++\n");
-        
-        getNumber("\t\t\tLua chon cua ban", 0, 2, &tmp);
-        
-        if (tmp == 2) {
-            if (page < totalPages) {
-                page++;
-            } else {
-                printf("Day la trang cuoi.\n");	
-            } 
-        } else if (tmp == 1) {
-            if (page > 1) {
-                page--;
-            } else {
-                printf("Day la trang dau.\n");	
-            } 
-        } else if (tmp == 0) {
-            break;
-        } else {
-            printf("Lua chon khong hop le!\n");
-        }
-    } while (1);
+    }else{   
+	    int tmp;
+	    int itemPerPage;
+	    int page = 1;
+	    
+	    getNumber("Nhap so luong muc moi trang (1-10)", 1, 10, &itemPerPage);
+	    
+	    do {
+	        int totalPages = (productCount + itemPerPage - 1) / itemPerPage;
+	        int start = (page - 1) * itemPerPage;
+	        int end = start + itemPerPage;
+	        
+	        if (end > productCount) {
+	            end = productCount;
+	        }
+	            
+	        printf("\n\t\t\t++====================DANH SACH HANG HOA (Trang %d/%d)====================++\n", page, totalPages);
+	        printf("\t\t\t|| %-10s | %-20s | %-8s | %-6s | %-15s ||\n", 
+	            "MA HANG", "TEN HANG", "DON VI", "SL TON", "TT");
+	        printf("\t\t\t++-------------------------------------------------------------------------++\n");    
+	            
+	        for (int i = start; i < end; i++) {
+	            printf("\t\t\t|| %-10s | %-20s | %-8s | %-6d | %-15s ||\n",
+	                    products[i].productId,
+	                    products[i].name,
+	                    products[i].unit,
+	                    products[i].qty,
+	                    products[i].status == 1 ? "Con su dung" : "Da het han");
+	            }
+	        
+	        printf("\t\t\t++-------------------------------------------------------------------------++\n");
+	        printf("\t\t\t|| Hien thi: %d-%d / %d san pham%-19s||\n", 
+	               start + 1, end, productCount, "");
+	        printf("\t\t\t++=========================================================================++\n");
+	        printf("\t\t\t||1: Trang truoc | 0: Thoat |2: Trang sau \n");
+	        printf("\t\t\t++=========================================================================++\n");
+	        
+	        getNumber("\t\t\tLua chon cua ban", 0, 2, &tmp);
+	        
+	        if (tmp == 2) {
+	            if (page < totalPages) {
+	                page++;
+	            } else {
+	                printf("Day la trang cuoi.\n");	
+	            } 
+	        } else if (tmp == 1) {
+	            if (page > 1) {
+	                page--;
+	            } else {
+	                printf("Day la trang dau.\n");	
+	            } 
+	        } else if (tmp == 0) {
+	            break;
+	        } else {
+	            printf("Lua chon khong hop le!\n");
+	        }
+	    } while (1);
+	}
 }
 
 void updateItem() {
@@ -439,7 +439,6 @@ void statusItem() {
         printf("\n\t\t\t++====================THONG BAO====================++\n");
         printf("\t\t\t||%-48s||\n", " Danh sach hang hoa rong");
         printf("\t\t\t++==================================================++\n");
-        return;
     } else {
         getString(searchId, "Nhap ma hang hoa can doi trang thai: ", 10);
         
@@ -702,17 +701,23 @@ void importExport() {
             if (choice) {
                 // Xuat hang hoa
                 if (products[index].status) {
-                    getNumber("Nhap so luong xuat hang hoa", 0, products[index].qty, &newQty);
-                    
-                    if (newQty <= products[index].qty) {
-                        products[index].qty -= newQty;
-                        addTransaction(products[index].productId, "OUT");
-                        printf("Xuat hang hoa thanh cong\n");
-                    } else {
-                        printf("\n\t\t\t++====================THONG BAO====================++\n");
-                        printf("\t\t\t||%-48s||\n", "Loi! So luong xuat vuot qua ton kho");
-                        printf("\t\t\t++==================================================++\n");
-                    }
+                	if(products[index].qty !=0 ){               		
+	                    getNumber("Nhap so luong xuat hang hoa", 0, products[index].qty, &newQty);
+	                    
+	                    if (newQty <= products[index].qty) {
+	                        products[index].qty -= newQty;
+	                        addTransaction(products[index].productId, "OUT");
+	                        printf("Xuat hang hoa thanh cong\n");
+	                    } else {
+	                        printf("\n\t\t\t++====================THONG BAO====================++\n");
+	                        printf("\t\t\t||%-48s||\n", "Loi! So luong xuat vuot qua ton kho");
+	                        printf("\t\t\t++==================================================++\n");
+	                    }
+	                }else{
+	                	printf("\n\t\t\t++====================THONG BAO====================++\n");
+	                    printf("\t\t\t||%-48s||\n", "Loi! Hang da het");
+	                    printf("\t\t\t++==================================================++\n");
+					}
                 } else {
                     printf("\n\t\t\t++====================THONG BAO====================++\n");
                     printf("\t\t\t||%-48s||\n", "Loi! Hang da het han su dung");
@@ -742,46 +747,46 @@ void historyTransaction() {
         printf("\n\t\t\t++====================THONG BAO====================++\n");
         printf("\t\t\t||%-48s||\n", " Danh sach hang hoa rong");
         printf("\t\t\t++==================================================++\n");
-        return;
-    }
-    
-    getString(searchId, "Nhap ma hang hoa can xem lich su giao dich", 10);
-    
-    // Kiem tra ma hang hoa co ton tai
-    for (int i = 0; i < productCount; i++) {
-        if (strcmp(searchId, products[i].productId) == 0) {
-            flag = 1; 
-            break;
-        }
-    }
-    
-    if (flag) {
-        int transactionFound = 0;
-        printf("\n\t\t\t++====================LICH SU GIAO DICH===============++\n");
-        printf("\t\t\t|| %-10s | %-10s | %-8s | %-12s ||\n", 
-               "MA GD", "MA HANG", "LOAI", "NGAY GD");
-        printf("\t\t\t++-------------------------------------------------------++\n");
-        
-        // Hien thi cac giao dich cua hang hoa
-        for (int i = 0; i < transactionCount; i++) {
-            if (strcmp(searchId, transactions[i].productId) == 0) {
-                transactionFound = 1;
-                printf("\t\t\t|| %-10s | %-10s | %-8s | %-12s ||\n",
-                       transactions[i].transId,
-                       transactions[i].productId,
-                       transactions[i].type,
-                       transactions[i].date);
-            }
-        }
-        
-        if (!transactionFound) {
-            printf("\t\t\t||%-55s||\n", " Hang hoa chua co giao dich nhap/xuat");
-        }
-        
-        printf("\t\t\t++=====================================================++\n");
-    } else {
-        printf("\n\t\t\t++====================THONG BAO====================++\n");
-        printf("\t\t\t||%-48s||\n", " Ma hang hoa khong ton tai");
-        printf("\t\t\t++==================================================++\n");
-    } 
+    }else{
+	    
+	    getString(searchId, "Nhap ma hang hoa can xem lich su giao dich", 10);
+	    
+	    // Kiem tra ma hang hoa co ton tai
+	    for (int i = 0; i < productCount; i++) {
+	        if (strcmp(searchId, products[i].productId) == 0) {
+	            flag = 1; 
+	            break;
+	        }
+	    }
+	    
+	    if (flag) {
+	        int transactionFound = 0;
+	        printf("\n\t\t\t++====================LICH SU GIAO DICH===============++\n");
+	        printf("\t\t\t|| %-10s | %-10s | %-8s | %-12s ||\n", 
+	               "MA GD", "MA HANG", "LOAI", "NGAY GD");
+	        printf("\t\t\t++-------------------------------------------------------++\n");
+	        
+	        // Hien thi cac giao dich cua hang hoa
+	        for (int i = 0; i < transactionCount; i++) {
+	            if (strcmp(searchId, transactions[i].productId) == 0) {
+	                transactionFound = 1;
+	                printf("\t\t\t|| %-10s | %-10s | %-8s | %-12s ||\n",
+	                       transactions[i].transId,
+	                       transactions[i].productId,
+	                       transactions[i].type,
+	                       transactions[i].date);
+	            }
+	        }
+	        
+	        if (!transactionFound) {
+	            printf("\t\t\t||%-55s||\n", " Hang hoa chua co giao dich nhap/xuat");
+	        }
+	        
+	        printf("\t\t\t++=====================================================++\n");
+	    } else {
+	        printf("\n\t\t\t++====================THONG BAO====================++\n");
+	        printf("\t\t\t||%-48s||\n", " Ma hang hoa khong ton tai");
+	        printf("\t\t\t++==================================================++\n");
+	    }
+	}
 }
